@@ -1,6 +1,6 @@
 package com.project.nexushub.configuration;
 
-import com.project.nexushub.service.JwtService;
+import com.project.nexushub.authentication.JwtService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
