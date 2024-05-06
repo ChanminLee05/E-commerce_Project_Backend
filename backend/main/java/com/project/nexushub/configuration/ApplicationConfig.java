@@ -1,7 +1,7 @@
 package com.project.nexushub.configuration;
 
 import lombok.RequiredArgsConstructor;
-import com.project.nexushub.repository.UserRepository;
+import com.project.nexushub.user.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
