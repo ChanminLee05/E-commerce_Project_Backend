@@ -1,5 +1,6 @@
 package com.project.nexushub.shoppingCart;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.nexushub.cartItem.CartItem;
 import com.project.nexushub.user.User;
@@ -22,15 +23,11 @@ public class Cart {
     @GeneratedValue
     private Integer cartId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "user_id")
-    @JsonIgnoreProperties("cart")
     private User user;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER)
     private List<CartItem> cartItems;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "cart_name")
-    private CartType cartType;
 }

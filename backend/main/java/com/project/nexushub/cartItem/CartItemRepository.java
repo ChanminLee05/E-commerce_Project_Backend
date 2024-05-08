@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
 
-    @Query("SELECT new com.project.nexushub.cartItem.CartItemResponseDTO(ci.cartItemId, ci.product.productId, ci.quantity) FROM CartItem ci")
+    @Query("SELECT ci FROM CartItem ci")
     List<CartItemResponseDTO> findAllCartItem();
 
 
-    Optional<CartItem> findByCart_CartIdAndProduct_ProductId(int cartId, int productId);
+    Optional<CartItem> findByCart_CartIdAndCartItemId(int cartId, int cartItemId);
 }

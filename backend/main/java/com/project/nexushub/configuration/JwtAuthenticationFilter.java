@@ -38,9 +38,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        //extract jwtToken from auth header
         jwt = authHeader.substring(7);
-        //extract userEmail
+
         userEmail = jwtService.extractUsername(jwt);
         try {
             if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -52,10 +51,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
 
-                    // Log success
                     logger.info("Authentication success for user: {}");
                 } else {
-                    // Log token validation failure
                     logger.warn("Token validation failed for user: {}");
                 }
             } else {

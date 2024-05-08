@@ -10,12 +10,16 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 @Service
 public class JwtService {
 
     private static final String SECRET_KEY = "gYALxsG4nfWIWqPMQXfTqQTVZKb+1a2t2XCt9vlv9kgDaOEowwbLiBMRSDwwt4WE";
+    private static final Map<String, Date> invalidatedTokens = new ConcurrentHashMap<>();
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -26,7 +30,12 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
-        System.out.println("Generating token for user: " + userDetails.getUsername());
+        String username = userDetails.getUsername();
+        System.out.println("Generating token for user: " + username);
+
+        invalidateToken(username);
+
+        System.out.println("Invalidated token for user: " + username);
 
         Date issuedAt = new Date(System.currentTimeMillis());
         System.out.println("Token issued at: " + issuedAt);
@@ -52,7 +61,7 @@ public class JwtService {
     }
 
     private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+        return extractExpiration(token).before(new Date()) || invalidatedTokens.containsKey(token);
     }
 
     private Date extractExpiration(String token) {
@@ -62,7 +71,6 @@ public class JwtService {
     private Claims extractAllClaims(String token) {
         return Jwts
                 .parserBuilder()
-                //ensure the same client is sending jwt key and message is not changed along the way
                 .setSigningKey(getSignInKey())
                 .build()
                 .parseClaimsJws(token)
@@ -72,5 +80,9 @@ public class JwtService {
     private Key getSignInKey() {
         byte[] KeyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(KeyBytes);
+    }
+
+    private void invalidateToken(String token) {
+        invalidatedTokens.remove(token);
     }
 }

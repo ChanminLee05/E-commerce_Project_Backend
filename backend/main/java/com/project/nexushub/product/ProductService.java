@@ -39,8 +39,10 @@ public class ProductService {
         return ProductResponse.builder()
                 .productId(product.getProductId())
                 .productName(product.getProduct_name())
+                .brand(product.getBrand())
                 .description(product.getDescription())
                 .price(product.getPrice())
+                .images(product.getImageUrl())
                 .stockQuantity(product.getStock_quantity())
                 .category(categoryResponse)
                 .build();
@@ -59,9 +61,21 @@ public class ProductService {
         return mapToProductResponse(product);
     }
 
-    public Product addProduct(AddProductRequest addProductRequest) {
+    public List<ProductResponse> getAllProductsByCategoryId(int categoryId) {
+        List<Product> products = productRepository.findAllbyCategoryId(categoryId);
+        return products.stream()
+                .map(this::mapToProductResponse)
+                .collect(Collectors.toList());
+    }
+
+    public ProductResponse addProduct(AddProductRequest addProductRequest) {
 
         Optional<CategoryResponse> categoryOptional = categoryService.getCategoryByCategoryId(addProductRequest.getCategoryId());
+        Optional<Product> existingProductOptional = productRepository.findProductByProductName(addProductRequest.getProductName());
+
+        if (existingProductOptional.isPresent()) {
+            throw new IllegalArgumentException("Product with the same title already exists");
+        }
 
         if (categoryOptional.isPresent()) {
             CategoryResponse categoryResponse = categoryOptional.get();
@@ -69,24 +83,18 @@ public class ProductService {
             category.setCategoryId(categoryResponse.getCategoryId());
             category.setCategory_name(categoryResponse.getCategoryName());
 
-//            byte[] imageBytes = null;
-//            try {
-//                imageBytes = addProductRequest.getImage().getBytes();
-//            } catch (IOException e) {
-//                throw new RuntimeException("Failed to read image file", e);
-//            }
-
             Product product = Product.builder()
                     .product_name(addProductRequest.getProductName())
+                    .brand(addProductRequest.getBrand())
                     .category(category)
                     .description(addProductRequest.getDescription())
                     .stock_quantity(addProductRequest.getStock_quantity())
                     .price(addProductRequest.getPrice())
-//                    .image(imageBytes)
-
+                    .imageUrl(addProductRequest.getImageUrl())
                     .build();
 
-            return productRepository.save(product);
+            Product savedProduct = productRepository.save(product);
+            return mapToProductResponse(savedProduct);
         } else {
             throw new IllegalArgumentException("Category not found");
         }
@@ -108,9 +116,11 @@ public class ProductService {
                     return ResponseEntity.badRequest().build();
                 }
 
+                existingProduct.setBrand(updatedProductRequest.getBrand());
                 existingProduct.setDescription(updatedProductRequest.getDescription());
                 existingProduct.setStock_quantity(updatedProductRequest.getStock_quantity());
                 existingProduct.setPrice(updatedProductRequest.getPrice());
+                existingProduct.setImageUrl(updatedProductRequest.getImageUrl());
 
                 productRepository.save(existingProduct);
 
