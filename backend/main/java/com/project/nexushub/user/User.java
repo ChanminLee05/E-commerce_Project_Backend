@@ -1,5 +1,6 @@
 package com.project.nexushub.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.nexushub.role.Role;
 import com.project.nexushub.role.RoleType;
 import com.project.nexushub.shoppingCart.Cart;
@@ -32,8 +33,8 @@ public class User implements UserDetails {
     private String phone_number;
     private LocalDate created;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Cart> cart;
+    @OneToOne
+    private Cart cart;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",

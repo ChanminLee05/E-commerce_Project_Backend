@@ -19,8 +19,11 @@ public class ShoppingCartService {
         return shoppingCartRepository.findAllCart();
     }
 
-    public List<Cart> getCartByUserId(UUID userId) {
+    public Cart getCartByUserId(UUID userId) {
         return shoppingCartRepository.findByUserId(userId);
     }
 
+    public Cart getCartByUsername(String username) {
+        return shoppingCartRepository.findByUsername(username);
+    }
 }

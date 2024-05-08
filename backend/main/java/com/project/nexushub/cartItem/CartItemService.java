@@ -27,7 +27,7 @@ public class CartItemService {
         return cartItemRepository.findAllCartItem();
     }
     public void addProductToCart(int cartId, int productId, int quantity) {
-        Optional<CartItem> existingCartItem = cartItemRepository.findByCart_CartIdAndProduct_ProductId(cartId, productId);
+        Optional<CartItem> existingCartItem = cartItemRepository.findByCart_CartIdAndCartItemId(cartId, productId);
 
         // Product exists in cart, update quantity
         if (existingCartItem.isPresent()) {
@@ -50,16 +50,15 @@ public class CartItemService {
         }
     }
 
-    public void deleteProductFromCart(int cartId, int productId) {
-        Optional<CartItem> existingCartItem = cartItemRepository.findByCart_CartIdAndProduct_ProductId(cartId, productId);
+    public void deleteProductFromCart(int cartId, int cartItemId) {
+        Optional<Cart> cartOptional = shoppingCartRepository.findById(cartId);
+        Optional<CartItem> cartItemOptional = cartItemRepository.findById(cartItemId);
 
-        // Product exists in cart, update quantity
-        if (existingCartItem.isPresent()) {
-            CartItem cartItem = existingCartItem.get();
+        if (cartOptional.isPresent() && cartItemOptional.isPresent()) {
+            CartItem cartItem = cartItemOptional.get();
             cartItemRepository.delete(cartItem);
         } else {
-            // Handle the case where the CartItem does not exist
-            throw new NoSuchElementException("CartItem not found for cartId: " + cartId + " and productId: " + productId);
+            throw new NoSuchElementException("CartItem not found for cartId: " + cartId + " and cartItemId: " + cartItemId);
         }
     }
 }

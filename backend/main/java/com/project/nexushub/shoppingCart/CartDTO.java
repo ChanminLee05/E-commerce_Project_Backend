@@ -14,6 +14,5 @@ import java.util.List;
 @NoArgsConstructor
 public class CartDTO {
     private Integer cartId;
-    private CartType cartType;
     private List<CartItemResponseDTO> cartItemList;
 }

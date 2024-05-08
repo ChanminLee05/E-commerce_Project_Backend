@@ -1,5 +1,6 @@
 package com.project.nexushub.cartItem;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.nexushub.shoppingCart.Cart;
 import com.project.nexushub.product.Product;
 import jakarta.persistence.*;
@@ -20,6 +21,7 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "cart_id")
+    @JsonIgnoreProperties("cartItems")
     private Cart cart;
 
     @ManyToOne
@@ -27,4 +29,13 @@ public class CartItem {
     private Product product;
 
     private int quantity;
+
+    @Override
+    public String toString() {
+        return "CartItem{" +
+                "cartItemId=" + cartItemId +
+                ", product=" + product +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

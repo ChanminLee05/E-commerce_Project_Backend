@@ -27,9 +27,18 @@ public class ProductController {
         return ResponseEntity.ok(productResponse);
     }
 
+    @GetMapping("/product/category/{category_id}")
+    public ResponseEntity<List<ProductResponse>> getProductByCategoryId(@PathVariable("category_id") Integer categoryId) {
+        List<ProductResponse> products = productService.getAllProductsByCategoryId(categoryId);
+        if (products.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
     @PostMapping("/product/add")
-    public ResponseEntity<Product> addProduct(@RequestBody AddProductRequest addProductRequest) {
-        Product addedProduct = productService.addProduct(addProductRequest);
+    public ResponseEntity<ProductResponse> addProduct(@RequestBody AddProductRequest addProductRequest) {
+        ProductResponse addedProduct = productService.addProduct(addProductRequest);
         if (addedProduct != null) {
             return ResponseEntity.ok(addedProduct);
         } else {

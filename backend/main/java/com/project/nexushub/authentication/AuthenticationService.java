@@ -49,19 +49,14 @@ public class AuthenticationService {
 
         userRepository.save(user);
 
-        Cart wishListCart = new Cart();
-        wishListCart.setUser(user);
-        wishListCart.setCartType(CartType.WISH_LIST);
-        shoppingCartRepository.save(wishListCart);
-
         Cart shoppingCart = new Cart();
         shoppingCart.setUser(user);
-        shoppingCart.setCartType(CartType.SHOPPING_CART);
         shoppingCartRepository.save(shoppingCart);
 
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .userId(user.getUser_id())
                 .build();
     }
 
@@ -89,6 +84,7 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .userId(user.getUser_id())
                 .build();
     }
 }
