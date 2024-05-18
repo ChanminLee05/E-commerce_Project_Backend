@@ -18,42 +18,6 @@ public class ShoppingCartController {
 
     private final ShoppingCartService shoppingCartService;
 
-    @GetMapping("/cart")
-    public ResponseEntity<List<CartDTO>> getAllProduct() {
-        List<Cart> carts = shoppingCartService.getAllCart();
-        if (!carts.isEmpty()) {
-            List<CartDTO> cartDTOS = carts.stream()
-                    .map(cart -> {
-                        CartDTO cartDTO = new CartDTO();
-                        cartDTO.setCartId(cart.getCartId());
-
-                        List<CartItemResponseDTO> cartItemResponseDTOs = cart.getCartItems().stream()
-                                .map(cartItem -> {
-                                    CartItemResponseDTO cartItemResponseDTO = new CartItemResponseDTO();
-                                    cartItemResponseDTO.setCartItemId(cartItem.getCartItemId());
-
-                                    Product product = cartItem.getProduct();
-                                    cartItemResponseDTO.setProductName(product.getProduct_name());
-                                    cartItemResponseDTO.setBrand(product.getBrand());
-                                    cartItemResponseDTO.setImages(product.getImageUrl());
-                                    cartItemResponseDTO.setPrice(product.getPrice());
-                                    cartItemResponseDTO.setPhotos(product.getPhotos());
-                                    cartItemResponseDTO.setQuantity(cartItem.getQuantity());
-
-                                    return cartItemResponseDTO;
-                                })
-                                .collect(Collectors.toList());
-
-                        cartDTO.setCartItemList(cartItemResponseDTOs);
-                        return cartDTO;
-                    })
-                    .toList();
-            return ResponseEntity.ok(cartDTOS);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @GetMapping("/cart/{user_id}")
     public ResponseEntity<CartDTO> getCartByUserId(@PathVariable("user_id") UUID userId) {
         Cart cart = shoppingCartService.getCartByUserId(userId);

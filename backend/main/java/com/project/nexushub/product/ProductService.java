@@ -205,7 +205,6 @@ public class ProductService {
             }
 
             existingProduct.setPhotos(photoImage);
-//            existingProduct.setImageUrl(photoImage.isEmpty() ? null : Collections.singletonList(photoImage.get(0)));
 
             Product updatedProduct = productRepository.save(existingProduct);
             return ResponseEntity.ok(mapToProductResponse(updatedProduct));

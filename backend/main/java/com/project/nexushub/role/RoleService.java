@@ -15,18 +15,17 @@ public class RoleService {
 
     @PostConstruct
     public void initializeRoles() {
-        if(!roleRepository.existsRoleByRoleName(RoleType.ADMIN)) {
-            Role adminRole = new Role(RoleType.ADMIN);
-            roleRepository.save(adminRole);
-        } else {
-            throw new IllegalArgumentException("ADMIN role already exists");
-        }
+        initializeRole(RoleType.ADMIN);
+        initializeRole(RoleType.USER);
+    }
 
-        if (!roleRepository.existsRoleByRoleName(RoleType.USER)) {
-            Role userRole = new Role(RoleType.USER);
-            roleRepository.save(userRole);
+    private void initializeRole(RoleType roleType) {
+        if (!roleRepository.existsRoleByRoleName(roleType)) {
+            Role role = new Role(roleType);
+            roleRepository.save(role);
+            System.out.println("Role {} created successfully" + roleType);
         } else {
-            throw new IllegalArgumentException("USER role already exists");
+            System.out.println("Role {} already exists" + roleType);
         }
     }
 }
