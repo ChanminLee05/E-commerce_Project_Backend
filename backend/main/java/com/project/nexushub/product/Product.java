@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Set;
@@ -34,6 +35,16 @@ public class Product {
     @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
     @Column(name = "image_url")
     private List<String> imageUrl;
+
+    @ElementCollection
+    @CollectionTable(name = "product_photos", joinColumns = @JoinColumn(name = "product_id"))
+    @Column(name = "photo_url")
+    private List<String> photos;
+
+    public String getPhotoImagePath() {
+        if (photos == null) return null;
+        return "C:/Users/Chanmin/chatbot_project/chatbot/frontend/public/images" + photos;
+    }
 
     private double price;
     private int stock_quantity;
