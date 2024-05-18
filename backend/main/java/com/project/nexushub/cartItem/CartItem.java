@@ -6,6 +6,8 @@ import com.project.nexushub.product.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -29,6 +31,11 @@ public class CartItem {
     private Product product;
 
     private int quantity;
+
+    @ElementCollection
+    @CollectionTable(name = "cart_item_photos", joinColumns = @JoinColumn(name = "cart_item_id"))
+    @Column(name = "photo_url")
+    private List<String> photos;
 
     @Override
     public String toString() {

@@ -37,8 +37,9 @@ public class ShoppingCartController {
                                     cartItemResponseDTO.setBrand(product.getBrand());
                                     cartItemResponseDTO.setImages(product.getImageUrl());
                                     cartItemResponseDTO.setPrice(product.getPrice());
-
+                                    cartItemResponseDTO.setPhotos(product.getPhotos());
                                     cartItemResponseDTO.setQuantity(cartItem.getQuantity());
+
                                     return cartItemResponseDTO;
                                 })
                                 .collect(Collectors.toList());
@@ -70,8 +71,9 @@ public class ShoppingCartController {
                         cartItemResponseDTO.setBrand(product.getBrand());
                         cartItemResponseDTO.setImages(product.getImageUrl());
                         cartItemResponseDTO.setPrice(product.getPrice());
-
+                        cartItemResponseDTO.setPhotos(product.getPhotos());
                         cartItemResponseDTO.setQuantity(cartItem.getQuantity());
+
                         return cartItemResponseDTO;
                     })
                     .collect(Collectors.toList());

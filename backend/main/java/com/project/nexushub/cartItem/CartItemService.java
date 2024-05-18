@@ -1,14 +1,16 @@
 package com.project.nexushub.cartItem;
 
+import com.project.nexushub.product.FileUploadUtil;
 import com.project.nexushub.shoppingCart.Cart;
 import com.project.nexushub.product.Product;
 import com.project.nexushub.product.ProductRepository;
 import com.project.nexushub.shoppingCart.ShoppingCartRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.io.IOException;
+import java.util.*;
 
 @Service
 public class CartItemService {
@@ -40,10 +42,15 @@ public class CartItemService {
             Optional<Product> product = productRepository.findById(productId);
 
             if (cart.isPresent() && product.isPresent()) {
+                Optional<List<String>> photosOptional = productRepository.findPhotosByProductId(productId);
+                List<String> photos = photosOptional.orElse(Collections.emptyList());
+                System.out.println("Photo" + photos);
+
                 CartItem cartItem = new CartItem();
                 cartItem.setCart(cart.get());
                 cartItem.setProduct(product.get());
                 cartItem.setQuantity(quantity);
+                cartItem.setPhotos(photos);
 
                 cartItemRepository.save(cartItem);
             }

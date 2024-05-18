@@ -38,13 +38,17 @@ public class UserController {
 
                 return ResponseEntity.ok(userResponse);
             } else {
-                // User not found
                 return ResponseEntity.notFound().build();
             }
         } else {
-            // UserResponse not found
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/user/totalUsers")
+    public ResponseEntity<Long> getTotalUsers() {
+        Long totalUsers = userRepository.count();
+        return ResponseEntity.ok(totalUsers);
     }
 
     @PutMapping("/user/reset-password")

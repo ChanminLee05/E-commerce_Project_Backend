@@ -16,6 +16,12 @@ public class CartItemResponseDTO {
     private String productName;
     private String brand;
     private List<String> images;
+    private List<String> photos;
     private double price;
     private int quantity;
+
+    public String getPhotoImagePath() {
+        if (photos == null) return null;
+        return "C:/Users/Chanmin/chatbot_project/chatbot/frontend/public/images" + photos;
+    }
 }
