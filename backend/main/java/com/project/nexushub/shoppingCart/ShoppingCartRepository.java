@@ -12,6 +12,8 @@ public interface ShoppingCartRepository extends JpaRepository<Cart, Integer> {
     List<Cart> findAllCart();
 
     @Query("SELECT c FROM Cart c JOIN c.user u WHERE u.user_id = :userId")
-    List<Cart> findByUserId(@Param("userId") UUID userId);
+    Cart findByUserId(@Param("userId") UUID userId);
 
+    @Query("SELECT c FROM Cart c JOIN c.user u WHERE u.username = :username")
+    Cart findByUsername(@Param("username") String username);
 }

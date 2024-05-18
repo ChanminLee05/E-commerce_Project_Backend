@@ -1,6 +1,7 @@
 package com.project.nexushub.shoppingCart;
 
 import com.project.nexushub.cartItem.CartItemResponseDTO;
+import com.project.nexushub.product.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,14 +26,20 @@ public class ShoppingCartController {
                     .map(cart -> {
                         CartDTO cartDTO = new CartDTO();
                         cartDTO.setCartId(cart.getCartId());
-                        cartDTO.setCartType(cart.getCartType());
 
                         List<CartItemResponseDTO> cartItemResponseDTOs = cart.getCartItems().stream()
                                 .map(cartItem -> {
                                     CartItemResponseDTO cartItemResponseDTO = new CartItemResponseDTO();
                                     cartItemResponseDTO.setCartItemId(cartItem.getCartItemId());
-                                    cartItemResponseDTO.setProductId(cartItem.getProduct().getProductId());
+
+                                    Product product = cartItem.getProduct();
+                                    cartItemResponseDTO.setProductName(product.getProduct_name());
+                                    cartItemResponseDTO.setBrand(product.getBrand());
+                                    cartItemResponseDTO.setImages(product.getImageUrl());
+                                    cartItemResponseDTO.setPrice(product.getPrice());
+                                    cartItemResponseDTO.setPhotos(product.getPhotos());
                                     cartItemResponseDTO.setQuantity(cartItem.getQuantity());
+
                                     return cartItemResponseDTO;
                                 })
                                 .collect(Collectors.toList());
@@ -48,43 +55,33 @@ public class ShoppingCartController {
     }
 
     @GetMapping("/cart/{user_id}")
-    public ResponseEntity<List<CartDTO>> getCartByUserId(@PathVariable("user_id") UUID userId) {
-        List<Cart> carts = shoppingCartService.getCartByUserId(userId);
-        if (!carts.isEmpty()) {
-            List<CartDTO> cartDTOS = carts.stream()
-                    .map(cart -> {
-                        CartDTO cartDTO = new CartDTO();
-                        cartDTO.setCartId(cart.getCartId());
-                        cartDTO.setCartType(cart.getCartType());
+    public ResponseEntity<CartDTO> getCartByUserId(@PathVariable("user_id") UUID userId) {
+        Cart cart = shoppingCartService.getCartByUserId(userId);
+        if (cart != null) {
+            CartDTO cartDTO = new CartDTO();
+            cartDTO.setCartId(cart.getCartId());
 
-                        List<CartItemResponseDTO> cartItemResponseDTOs = cart.getCartItems().stream()
-                                .map(cartItem -> {
-                                    CartItemResponseDTO cartItemResponseDTO = new CartItemResponseDTO();
-                                    cartItemResponseDTO.setCartItemId(cartItem.getCartItemId());
-                                    cartItemResponseDTO.setProductId(cartItem.getProduct().getProductId());
-                                    cartItemResponseDTO.setQuantity(cartItem.getQuantity());
-                                    return cartItemResponseDTO;
-                                })
-                                .collect(Collectors.toList());
+            List<CartItemResponseDTO> cartItemResponseDTOs = cart.getCartItems().stream()
+                    .map(cartItem -> {
+                        CartItemResponseDTO cartItemResponseDTO = new CartItemResponseDTO();
+                        cartItemResponseDTO.setCartItemId(cartItem.getCartItemId());
 
-                        cartDTO.setCartItemList(cartItemResponseDTOs);
-                        return cartDTO;
+                        Product product = cartItem.getProduct();
+                        cartItemResponseDTO.setProductName(product.getProduct_name());
+                        cartItemResponseDTO.setBrand(product.getBrand());
+                        cartItemResponseDTO.setImages(product.getImageUrl());
+                        cartItemResponseDTO.setPrice(product.getPrice());
+                        cartItemResponseDTO.setPhotos(product.getPhotos());
+                        cartItemResponseDTO.setQuantity(cartItem.getQuantity());
+
+                        return cartItemResponseDTO;
                     })
-                    .toList();
-            return ResponseEntity.ok(cartDTOS);
+                    .collect(Collectors.toList());
+
+            cartDTO.setCartItemList(cartItemResponseDTOs);
+            return ResponseEntity.ok(cartDTO);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
-
-//    @PostMapping("/add")
-//    public ResponseEntity<?> addToCart(@RequestBody CartItem item, @RequestHeader("Authorization") String jwt) {
-//        User currentUser = userService.getCurrentLoggedInUser(jwt);
-//        if (currentUser == null) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//        }
-//        cartItemService.addCartItem(currentUser, item);
-//        return ResponseEntity.ok().build();
-//    }
-
 }

@@ -1,9 +1,12 @@
 package com.project.nexushub.cartItem;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.nexushub.shoppingCart.Cart;
 import com.project.nexushub.product.Product;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -20,6 +23,7 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "cart_id")
+    @JsonIgnoreProperties("cartItems")
     private Cart cart;
 
     @ManyToOne
@@ -27,4 +31,18 @@ public class CartItem {
     private Product product;
 
     private int quantity;
+
+    @ElementCollection
+    @CollectionTable(name = "cart_item_photos", joinColumns = @JoinColumn(name = "cart_item_id"))
+    @Column(name = "photo_url")
+    private List<String> photos;
+
+    @Override
+    public String toString() {
+        return "CartItem{" +
+                "cartItemId=" + cartItemId +
+                ", product=" + product +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

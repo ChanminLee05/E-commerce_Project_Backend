@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 
 @Data
@@ -13,10 +16,10 @@ import lombok.NoArgsConstructor;
 public class AddProductRequest {
     private String productName;
     private int categoryId;
+    private String brand;
     private String description;
     private int stock_quantity;
     private double price;
-
-
-//    private MultipartFile image;
+    private List<String> imageUrl;
+    private List<MultipartFile> imageFile;
 }
