@@ -1,9 +1,6 @@
 package com.project.nexushub.admin;
 
 import com.project.nexushub.user.UpdateUserRequest;
-import com.project.nexushub.role.RoleRepository;
-import com.project.nexushub.user.UserRepository;
-import com.project.nexushub.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +12,10 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/nexusHub")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://dev--nexushub-mall.netlify.app")
 public class AdminController {
 
-    private final UserService userService;
     private final AdminService adminService;
-    private final RoleRepository roleRepository;
-    private final UserRepository userRepository;
 
     @GetMapping("/admin/user")
     public List<AdminResponse> getAllUsers() {

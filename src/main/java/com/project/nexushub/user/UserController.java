@@ -14,8 +14,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/nexusHub")
-@CrossOrigin(origins = "http://localhost:3000")
-//@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+@CrossOrigin(origins = "https://dev--nexushub-mall.netlify.app")
 public class UserController {
 
     private final UserService userService;
