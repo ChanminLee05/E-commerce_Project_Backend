@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/nexusHub")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://dev--nexushub-mall.netlify.app")
 public class ProductController {
 
     private final ProductService productService;

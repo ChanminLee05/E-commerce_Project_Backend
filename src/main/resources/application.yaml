@@ -3,9 +3,9 @@ spring:
     name: NexusHub
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/jwt_security?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:1234}
+    url: jdbc:mysql://jvdtbiqu75jr9t03:li6e3u9myj3aywac@sp6xl8zoyvbumaa2.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/qetwqkiyx7ferfx1?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
+    username: jvdtbiqu75jr9t03
+    password: li6e3u9myj3aywac
   jpa:
     hibernate:
       ddl-auto: update
@@ -13,11 +13,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        database-platform: org.hibernate.dialect.MySQL8Dialect
       database: mysql
       logging:
         level:
           org.springframework.security: DEBUG
 
 server:
-  port: ${PORT:8080}
+  port: 8080
