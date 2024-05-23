@@ -12,7 +12,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/nexusHub")
-@CrossOrigin(origins = "https://dev--nexushub-mall.netlify.app")
+@CrossOrigin(origins = "https://nexushub-mall.netlify.app/")
 public class AdminController {
 
     private final AdminService adminService;
